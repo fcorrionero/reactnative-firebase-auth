@@ -9,12 +9,12 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     firebase.initializeApp({
-      apiKey: "AIzaSyDZ3IRQOLLr0pbR7aA9GyTYuQaDVp-VGhQ",
-      authDomain: "auth-4ecb8.firebaseapp.com",
-      databaseURL: "https://auth-4ecb8.firebaseio.com",
-      projectId: "auth-4ecb8",
-      storageBucket: "auth-4ecb8.appspot.com",
-      messagingSenderId: "575924033388"
+      apiKey: "",
+      authDomain: "",
+      databaseURL: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: ""
     });
   }
 
