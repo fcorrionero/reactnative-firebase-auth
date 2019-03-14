@@ -1,15 +1,38 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Button, Card, CardSection, Input } from "./common";
+import { Text } from 'react-native';
+import { Button, Card, CardSection, Input, Spiner } from "./common";
 
 export class LoginForm extends React.Component {
 
-  state = { email: '', password: ''}
+  state = { email: '', password: '', error: '', loading: false};
 
   onButtonPress() {
     const { email, password } = this.state;
 
+    this.setState({error: '', loading: true});
+
     firebase.auth().signInWithEmailAndPassword(email, password)
+      .catch(()=>{
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .catch(() => {
+            this.setState({ error: 'Authentication Failed.', loading: false})
+          });
+      })
+    .then(() => {
+        this.setState({loading: false});
+    });
+  }
+
+  renderButton() {
+    if(this.state.loading){
+      return <Spiner size="small"/>;
+    }
+    return (
+      <Button onPress={this.onButtonPress.bind(this)}>
+        Log in
+      </Button>
+    );
   }
 
   render() {
@@ -34,12 +57,22 @@ export class LoginForm extends React.Component {
           />
         </CardSection>
 
+        <Text style={styles.errorTextStyle}>
+          {this.state.error}
+        </Text>
+
         <CardSection>
-          <Button onPress={this.onButtonPress.bind(this)}>
-            Log in
-          </Button>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
   }
 }
+
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red'
+  }
+};
